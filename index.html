@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #255ECE, #92CCE8, #7098B0); /* Gradient background */
+            color: #04060D;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #04060D;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 80%;
+            background-color: #7098B0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid #04060D; /* Border for progress bar container */
+            margin: 30px 0;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 40px; /* Thicker progress bar */
+            background-color: #255ECE; /* Deep blue for the progress bar */
+        }
+
+        .progress-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #countdown {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .countdown-line1 {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .countdown-line2 {
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .info {
+            width: 80%;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Countdown to New Year</h1>
+        <div class="progress-text" id="progress-text">0% of the year completed</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="info">
+            <div id="countdown-line1" class="countdown-line1">Calculating...</div>
+            <div id="countdown-line2" class="countdown-line2">Left for New Year</div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const startOfNextYear = new Date(now.getFullYear() + 1, 0, 1);
+
+            const totalTime = startOfNextYear - startOfYear; // Total milliseconds in the year
+            const elapsedTime = now - startOfYear; // Milliseconds passed since the start of the year
+            const remainingTime = startOfNextYear - now; // Milliseconds left until next year
+
+            // Calculate percentage of the year completed
+            const yearCompleted = (elapsedTime / totalTime) * 100;
+
+            // Convert remaining time to days, hours, minutes, and seconds
+            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            // Update countdown text
+            document.getElementById('countdown-line1').innerText = 
+                `${days} Days, ${hours} Hours, ${minutes} Minutes`;
+            document.getElementById('countdown-line2').innerText = `Left for New Year`;
+
+            // Update progress bar and text
+            document.getElementById('progress-bar').style.width = `${yearCompleted}%`;
+            document.getElementById('progress-text').innerText = `${yearCompleted.toFixed(2)}% of the year completed`;
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+
+        // Initial call
+        updateCountdown();
+    </script>
+</body>
+</html>
